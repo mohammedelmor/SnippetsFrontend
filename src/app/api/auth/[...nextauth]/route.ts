@@ -20,6 +20,7 @@ const handler = NextAuth({
         },
         async session({session, token, user}) {
             // Send properties to the client, like an access_token from a provider.
+            // @ts-ignore
             session.id_token = token.id_token as string
             return session
         }

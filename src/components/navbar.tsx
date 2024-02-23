@@ -2,7 +2,7 @@
 import React from "react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
 import {signIn, useSession} from "next-auth/react";
-import LogoutDropdown from "@/components/logout";
+import Logout from "@/components/logout";
 export default function Component() {
     const {data: session} = useSession()
     return (
@@ -12,7 +12,7 @@ export default function Component() {
             </NavbarBrand>
             <NavbarContent justify="end">
                 {session && <NavbarItem className="hidden lg:flex">
-                    <LogoutDropdown />
+                    <Logout />
                 </NavbarItem> }
                 {!session && <NavbarItem className="hidden lg:flex">
                     <button onClick={() => signIn()}>Sign in</button>
