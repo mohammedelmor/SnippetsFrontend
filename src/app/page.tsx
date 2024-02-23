@@ -1,5 +1,6 @@
 'use client'
 import {useSession, signIn, signOut} from "next-auth/react"
+import Navbar from "@/components/navbar";
 export default function Home() {
     const {data: session} = useSession()
     if (session) {
@@ -16,5 +17,4 @@ export default function Home() {
             <button onClick={() => signIn()}>Sign in</button>
         </>
     )
-
 }
