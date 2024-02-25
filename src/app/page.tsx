@@ -1,20 +1,19 @@
 'use client'
 import {useSession, signIn, signOut} from "next-auth/react"
-import Navbar from "@/components/navbar";
+import SnippetList from "@/components/SnippetList";
+import {useEffect, useState} from "react";
+import {fetchSnippets} from "@/lib/fetchSnippets";
 export default function Home() {
-    const {data: session} = useSession()
-    if (session) {
-        return (
-            <>
-                Signed in as {session?.user?.name} <br/>
-                <button onClick={() => signOut()}>Sign out</button>
-            </>
-        )
-    }
-    return (
-        <>
-            Not signed in <br/>
-            <button onClick={() => signIn()}>Sign in</button>
-        </>
-    )
+    const { data: session } = useSession();
+    const [snippets, setSnippets] = useState([]);
+    useEffect(() => {
+        if (session) {
+            // @ts-ignore
+            fetchSnippets(session.accessToken)
+                .then(data => setSnippets(data))
+                .catch(err => console.error(err));
+        }
+    }, [session]);
+
+    return <SnippetList snippets={snippets} />;
 }

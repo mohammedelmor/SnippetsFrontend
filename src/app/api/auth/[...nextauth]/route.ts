@@ -15,6 +15,7 @@ const handler = NextAuth({
             // Persist the OAuth access_token to the token right after signin
             if (account) {
                 token.id_token = account.id_token
+                token.accessToken = account.access_token
             }
             return token
         },
@@ -22,6 +23,8 @@ const handler = NextAuth({
             // Send properties to the client, like an access_token from a provider.
             // @ts-ignore
             session.id_token = token.id_token as string
+            // @ts-ignore
+            session.accessToken = token.accessToken
             return session
         }
     }

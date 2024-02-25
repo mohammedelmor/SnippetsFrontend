@@ -8,7 +8,7 @@ export default function Component() {
     return (
         <Navbar>
             <NavbarBrand>
-                <p className="font-bold text-inherit">Snippets</p>
+                <Link href="/" className="font-bold text-inherit">Snippets</Link>
             </NavbarBrand>
             <NavbarContent justify="end">
                 {session && <NavbarItem className="hidden lg:flex">
