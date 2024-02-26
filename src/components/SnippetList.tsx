@@ -11,7 +11,7 @@ type SnippetListProps = {
 export default function SnippetList({snippets} : SnippetListProps) {
     return (
         <div className="container mx-auto">
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-4 gap-3">
                 {snippets.map((snippet) => (
                     <SnippetCard key={snippet.id} snippet={snippet}/>
                 ))}

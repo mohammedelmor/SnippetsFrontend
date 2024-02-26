@@ -11,7 +11,7 @@ export default function Logout() {
         // signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}` })
         signOut().then(() => {
             // @ts-ignore
-            window.location.href = `http://localhost:8080/realms/code_snippets/protocol/openid-connect/logout?post_logout_redirect_uri=http://localhost:3000&id_token_hint=${session?.id_token}`;
+            window.location.href = `http://localhost:8080/realms/code_snippets/protocol/openid-connect/logout?post_logout_redirect_uri=http://localhost:3000&id_token_hint=${session?.idToken}`;
         })
         // Redirect to Keycloak logout URL
     }

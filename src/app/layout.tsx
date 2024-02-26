@@ -21,11 +21,15 @@ export default async function RootLayout({children}: Readonly<{
     return (
         <html lang="en">
         <body className={inter.className}>
-        <SessionProvider session={session}>
+        <SessionProvider
+            session={session}>
             <Providers>
-                {session && <Navbar />}
-                {session && children}
-                {!session && <RequiredLogin />}
+                <Navbar />
+                {children}
+                {/*<RequiredLogin />*/}
+                {/*{session && <Navbar />}*/}
+                {/*{session && children}*/}
+                {/*{!session && <RequiredLogin />}*/}
             </Providers>
         </SessionProvider>
         </body>

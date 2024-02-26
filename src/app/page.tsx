@@ -6,8 +6,12 @@ import {fetchSnippets} from "@/lib/fetchSnippets";
 export default function Home() {
     const { data: session } = useSession();
     const [snippets, setSnippets] = useState([]);
+
     useEffect(() => {
         if (session) {
+            if (session?.error === "RefreshAccessTokenError") {
+                signIn(); // Force sign in to hopefully resolve error
+            }
             // @ts-ignore
             fetchSnippets(session.accessToken)
                 .then(data => setSnippets(data))
