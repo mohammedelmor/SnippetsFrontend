@@ -67,8 +67,8 @@ const SnippetContainer = (props: any) => {
     }
 
     return (
-        <div className="container mx-auto">
-            <div className="flex flex-col h-screen bg-gray-800 text-white">
+        <div className="container mx-auto p-4">
+            <div className="flex flex-col bg-gray-800 text-white">
                 <div className="flex justify-between p-4 bg-gray-900 text-white rounded-lg shadow-md">
                     <h1 className="text-2xl font-bold mb-4 text-center">{snippet.title}</h1>
                     <div className="flex gap-1 actions">
@@ -83,7 +83,8 @@ const SnippetContainer = (props: any) => {
                             Delete
                         </Button>
                     </div>
-                    <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+                    <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}
+                           isKeyboardDismissDisabled={true}>
                         <ModalContent>
                             {(onClose) => (
                                 <>
@@ -104,7 +105,7 @@ const SnippetContainer = (props: any) => {
                         </ModalContent>
                     </Modal>
                 </div>
-                <div className="flex-grow bg-white text-black rounded-lg p-4">
+                <div className="bg-white text-black rounded-lg p-4 m-2">
                     <Editor
                         theme="vs-dark"
                         height="25vh"

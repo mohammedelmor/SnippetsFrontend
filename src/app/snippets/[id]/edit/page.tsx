@@ -98,7 +98,7 @@ export default function SnippetEdit(props: any) {
 
     return (
         <div className="container mx-auto p-4">
-            <div className="flex flex-col h-screen bg-gray-800 text-white rounded-lg shadow-md p-4">
+            <div className="flex flex-col bg-gray-800 text-white rounded-lg shadow-md p-4">
                 <div className="flex justify-between mb-4">
                     <Input
                         className="flex-grow mr-2"

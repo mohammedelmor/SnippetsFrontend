@@ -10,6 +10,13 @@ export default function Component() {
             <NavbarBrand>
                 <Link href="/" className="font-bold text-inherit">Snippets</Link>
             </NavbarBrand>
+            <NavbarContent justify="center">
+                {session &&<NavbarItem className="hidden lg:flex">
+                   <Link href="/snippets/add">
+                          <Button variant="light" color="success">+ Add</Button>
+                   </Link>
+                </NavbarItem>}
+            </NavbarContent>
             <NavbarContent justify="end">
                 {session && <NavbarItem className="hidden lg:flex">
                     <Logout />
