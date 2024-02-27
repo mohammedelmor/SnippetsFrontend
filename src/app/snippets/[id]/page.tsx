@@ -4,14 +4,15 @@ import {Snippet} from "@/types";
 import {useEffect, useState} from "react";
 import {fetchSnippetById} from "@/lib/fetchSnippet";
 import {Editor} from "@monaco-editor/react";
-import {Button} from "@nextui-org/react";
+import {Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure} from "@nextui-org/react";
 import {router} from "next/client";
-import { useRouter } from "next/navigation";
-
-
+import {useRouter} from "next/navigation";
+import {deleteSnippetById} from "@/lib/deleteSnippet";
+import {updateSnippet} from "@/lib/UpdateSnippet";
 
 
 const SnippetContainer = (props: any) => {
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const router = useRouter();
     const {data: session, status} = useSession();
     const [snippet, setSnippet] = useState<Snippet | null>(null);
@@ -45,6 +46,18 @@ const SnippetContainer = (props: any) => {
         router.push(`/snippets/${props.params.id}/edit`)
     }
 
+    const onDelete = async () => {
+        if (session) {
+            try {
+                // @ts-ignore
+                await deleteSnippetById(session.accessToken, snippet.id);
+                router.push(`/`)
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    }
+
     if (isLoading) {
         return <div>Loading...</div>;
     }
@@ -58,11 +71,38 @@ const SnippetContainer = (props: any) => {
             <div className="flex flex-col h-screen bg-gray-800 text-white">
                 <div className="flex justify-between p-4 bg-gray-900 text-white rounded-lg shadow-md">
                     <h1 className="text-2xl font-bold mb-4 text-center">{snippet.title}</h1>
-                    <Button
-                        color="warning"
-                        onPress={onEdit}>
-                        Edit
-                    </Button>
+                    <div className="flex gap-1 actions">
+                        <Button
+                            color="warning"
+                            onPress={onEdit}>
+                            Edit
+                        </Button>
+                        <Button
+                            color="danger"
+                            onPress={onOpen}>
+                            Delete
+                        </Button>
+                    </div>
+                    <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+                        <ModalContent>
+                            {(onClose) => (
+                                <>
+                                    <ModalHeader className="flex flex-col gap-1">Delete {snippet?.title}</ModalHeader>
+                                    <ModalBody>
+                                        Are you sure you want to delete this snippet?
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button color="danger" variant="light" onPress={onClose}>
+                                            Close
+                                        </Button>
+                                        <Button color="danger" onPress={onDelete}>
+                                            Yes
+                                        </Button>
+                                    </ModalFooter>
+                                </>
+                            )}
+                        </ModalContent>
+                    </Modal>
                 </div>
                 <div className="flex-grow bg-white text-black rounded-lg p-4">
                     <Editor

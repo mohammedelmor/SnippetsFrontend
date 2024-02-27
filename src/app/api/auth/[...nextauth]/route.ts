@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import {JWT} from "next-auth/jwt";
 import Keycloak from "next-auth/providers/keycloak";
+import {decodeJwt} from "jose";
 
 
 /**
@@ -63,6 +64,12 @@ const handler = NextAuth({
     callbacks: {
         async jwt({token, user, account}) {
             // Initial sign in
+            let roles = []
+            if (account?.access_token) {
+                const decodedToken = decodeJwt(account?.access_token)
+                // @ts-ignore
+                roles = decodedToken.realm_access.roles
+            }
             if (account && user) {
                 return {
                     accessToken: account.accessToken,
@@ -70,6 +77,7 @@ const handler = NextAuth({
                     accessTokenExpires: Date.now() + account.expires_in * 1000,
                     refreshToken: account.refresh_token,
                     idToken:account.id_token,
+                    roles,
                     user,
                 }
             }
@@ -86,6 +94,8 @@ const handler = NextAuth({
             if (token) {
                 // @ts-ignore
                 session.user = token.user
+                // @ts-ignore
+                session.user.roles = token.roles
                 // @ts-ignore
                 session.accessToken = token.accessToken
                 // @ts-ignore
