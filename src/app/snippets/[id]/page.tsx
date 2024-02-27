@@ -66,22 +66,25 @@ const SnippetContainer = (props: any) => {
         return <div>Snippet not found</div>;
     }
 
+    const canEdit = session?.user?.name === snippet.createdBy;
+    // @ts-ignore
+    const canDelete = session?.user?.name === snippet.createdBy || session?.user?.roles.includes("admin");
     return (
         <div className="container mx-auto p-4">
             <div className="flex flex-col bg-gray-800 text-white">
                 <div className="flex justify-between p-4 bg-gray-900 text-white rounded-lg shadow-md">
                     <h1 className="text-2xl font-bold mb-4 text-center">{snippet.title}</h1>
                     <div className="flex gap-1 actions">
-                        <Button
+                        {canEdit && <Button
                             color="warning"
                             onPress={onEdit}>
                             Edit
-                        </Button>
-                        <Button
+                        </Button>}
+                        {canDelete && <Button
                             color="danger"
                             onPress={onOpen}>
                             Delete
-                        </Button>
+                        </Button>}
                     </div>
                     <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}
                            isKeyboardDismissDisabled={true}>
