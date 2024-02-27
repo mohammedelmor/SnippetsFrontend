@@ -9,3 +9,14 @@ export type Snippet = {
     createdBy: string | null;
     modifiedBy: string | null;
 };
+
+export type SnippetContextObject = {
+    editing: boolean;
+    setEditing: (value: boolean) => void;
+}
+
+export type SnippetFormProps = {
+    title: string;
+    code: string;
+    language: string;
+}

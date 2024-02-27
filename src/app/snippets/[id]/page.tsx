@@ -1,16 +1,29 @@
 'use client';
-import {useSession, signIn} from "next-auth/react";
+import {signIn, useSession} from "next-auth/react";
 import {Snippet} from "@/types";
 import {useEffect, useState} from "react";
 import {fetchSnippetById} from "@/lib/fetchSnippet";
 import {Editor} from "@monaco-editor/react";
-import withAuth from "@/lib/withAuth";
-import {redirect} from "next/navigation";
+import {Button} from "@nextui-org/react";
+import {router} from "next/client";
+import { useRouter } from "next/navigation";
 
-const SnippetPage = (props: any) => {
+
+
+
+const SnippetContainer = (props: any) => {
+    const router = useRouter();
     const {data: session, status} = useSession();
     const [snippet, setSnippet] = useState<Snippet | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    useEffect(() => {
+        if (session) {
+            // @ts-ignore
+            if (session?.error === "RefreshAccessTokenError") {
+                signIn(); // Force sign in to hopefully resolve error
+            }
+        }
+    }, [session]);
     useEffect(() => {
         if (session) {
             console.log(props.params.id)
@@ -28,21 +41,28 @@ const SnippetPage = (props: any) => {
         }
     }, [session]);
 
+    const onEdit = () => {
+        router.push(`/snippets/${props.params.id}/edit`)
+    }
+
     if (isLoading) {
         return <div>Loading...</div>;
     }
 
     if (!snippet) {
-        console.log(status)
-        console.log(session);
         return <div>Snippet not found</div>;
     }
 
     return (
         <div className="container mx-auto">
             <div className="flex flex-col h-screen bg-gray-800 text-white">
-                <div className="p-4 bg-gray-900 text-white rounded-lg shadow-md">
+                <div className="flex justify-between p-4 bg-gray-900 text-white rounded-lg shadow-md">
                     <h1 className="text-2xl font-bold mb-4 text-center">{snippet.title}</h1>
+                    <Button
+                        color="warning"
+                        onPress={onEdit}>
+                        Edit
+                    </Button>
                 </div>
                 <div className="flex-grow bg-white text-black rounded-lg p-4">
                     <Editor
@@ -50,7 +70,11 @@ const SnippetPage = (props: any) => {
                         height="25vh"
                         defaultLanguage={snippet.language}
                         defaultValue={snippet.code}
-                        options={{minimap: {enabled: false}}}
+                        options={{
+                            minimap: {enabled: false},
+                            readOnly: true,
+                            domReadOnly: true
+                        }}
                     />
                 </div>
             </div>
@@ -59,4 +83,4 @@ const SnippetPage = (props: any) => {
 };
 
 
-export default withAuth(SnippetPage);
+export default SnippetContainer;

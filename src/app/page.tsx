@@ -9,6 +9,7 @@ export default function Home() {
 
     useEffect(() => {
         if (session) {
+            // @ts-ignore
             if (session?.error === "RefreshAccessTokenError") {
                 signIn(); // Force sign in to hopefully resolve error
             }
